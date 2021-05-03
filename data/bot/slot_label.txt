@@ -1,0 +1,8 @@
+PAD
+UNK
+O
+B-name
+I-name
+B-destination
+I-destination
+B-cabin
