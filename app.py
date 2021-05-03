@@ -1,5 +1,11 @@
+from argparse import Namespace
+
 import flask
 from flask import jsonify
+from flask import request
+import base64
+
+from predict import predict
 
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
@@ -11,9 +17,18 @@ def home():
 
 @app.route('/jarvis', methods=['GET'])
 def jarvis():
-    #yaha pe apna model wala function phir json ya jo bhi return mardenge
-    #return jsonify()
-    return "<h1>Json lelo</h1>"
+    query = request.args.get('query', type=str)
+    if query:
+        base64_message = query
+        base64_bytes = base64_message.encode('ascii')
+        message_bytes = base64.b64decode(base64_bytes)
+        message = message_bytes.decode('ascii')
+        lines = [message.strip().split()]
+        args = Namespace(model_dir='./bot_model', batch_size=32, no_cuda=False)
+        response = predict(args, lines)
+        print(response)
+    return jsonify(response)
 
 # server running on port 5000
-app.run()
+if __name__=='__main__':
+    app.run(host='0.0.0.0')
