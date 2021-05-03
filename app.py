@@ -13,8 +13,9 @@ app.config["DEBUG"] = True
 
 @app.route('/', methods=['GET'])
 def home():
-    return "<h1>Distant Assistant</h1><p>This is an API which classifies the intent for our digital assistant</p>"
+    return "<h1>Digital Assistant</h1><p>This is an API which classifies the intent for our digital assistant</p>", 200
 
+#sample url to call - http://chatbotmnnit.eastus.cloudapp.azure.com:5000/jarvis?str=give+me+the+details+of+shiv+dutt
 @app.route('/jarvis', methods=['GET'])
 def jarvis():
     query = request.args.get('query', type=str)
